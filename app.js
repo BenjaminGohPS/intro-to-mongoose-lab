@@ -23,7 +23,7 @@ const crmMenu = async () => {
         What would you like to do?\n
             1. Create a customer
             2. View all customers
-            3. Upodate a customer
+            3. Update a customer
             4. Delete a customer
             5. quit\n`);
 
@@ -34,6 +34,12 @@ const crmMenu = async () => {
       break;
     case "2":
       await viewAllCustomers();
+      break;
+    case "3":
+      await updateCustomers();
+      break;
+    case "4":
+      await deleteCustomer();
       break;
     case "5":
       console.log("exiting...");
@@ -66,9 +72,9 @@ const connect = async () => {
   console.log("Connected to MongoDB");
   await crmMenu();
 
-  await mongoose.disconnect();
-  console.log("Disconnected from MongoDB");
-  process.exit();
+  //   await mongoose.disconnect();
+  //   console.log("Disconnected from MongoDB");
+  //   process.exit();
 };
 
 connect();
@@ -101,6 +107,7 @@ connect();
 const viewAllCustomers = async () => {
   const allCustomers = await Customers.find();
   console.log("All customer:", allCustomers);
+  crmMenu();
 };
 
 const createCustomer = async () => {
@@ -110,8 +117,18 @@ const createCustomer = async () => {
   };
   const customer = await Customers.create(customerData);
   console.log("New customer:", customer);
+  crmMenu();
 };
 
+const updateCustomers = async () => {};
+
+const deleteCustomer = async () => {
+  const customerId = prompt("Enter the customer's id: ");
+
+  const customer = await Customers.findByIdAndDelete(customerId);
+  console.log("Deleted customer:", customer);
+  crmMenu();
+};
 /*------------------------------- Run Queries -------------------------------*/
 
 const runQueries = async () => {
